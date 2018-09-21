@@ -94,6 +94,7 @@ print(lengths.describe())
 min_line_length = 2
 max_line_length = 20
 
+# Filter out the questions that are too short/long
 short_questions_temp = []
 short_answers_temp = []
 
@@ -104,6 +105,7 @@ for question in clean_questions:
         short_answers_temp.append(clean_answers[i])
     i += 1
 
+# Filter out the answers that are too short/long
 short_questions = []
 short_answers = []
 
@@ -173,3 +175,70 @@ print(len(questions_vocab_to_int))
 print(len(questions_int_to_vocab))
 print(len(answers_vocab_to_int))
 print(len(answers_int_to_vocab))
+
+# add <EOS> after the end of sentence
+for i in range(len(short_answers)):
+    short_answers[i] += '<EOS>'
+
+# convert text to int
+# replace unknown words to <UNK>
+questions_int = []
+for question in short_questions:
+    ints = []
+    for word in question.split():
+        if word not in questions_vocab_to_int:
+            ints.append(questions_vocab_to_int['<UNK>'])
+        else:
+            ints.append(questions_vocab_to_int[word])
+    questions_int.append(ints)
+
+answers_int = []
+for answer in short_answers:
+    ints = []
+    for word in answer.split():
+        if word not in answers_vocab_to_int:
+            ints.append(answers_vocab_to_int['<UNK>'])
+        else:
+            ints.append(answers_vocab_to_int[word])
+    answers_int.append(ints)
+
+print(len(questions_int))
+print(len(answers_int))
+
+word_count = 0
+unk_count = 0
+
+for question in questions_int:
+    for word in question:
+        if word == questions_vocab_to_int["<UNK>"]:
+            unk_count += 1
+        word_count += 1
+
+for answer in answers_int:
+    for word in answer:
+        if word == answers_vocab_to_int["<UNK>"]:
+            unk_count += 1
+        word_count += 1
+
+unk_ratio = round(unk_count/word_count,4)*100
+
+print("Total number of words:", word_count)
+print("Number of times <UNK> is used:", unk_count)
+print("Percent of words that are <UNK>: {}%".format(round(unk_ratio,3)))
+
+sorted_questions = []
+sorted_answers = []
+
+for length in range(1, max_line_length+1):
+    for i in enumerate(questions_int):
+        if len(i[1]) == length:
+            sorted_questions.append(questions_int[i[0]])
+            sorted_answers.append(answers_int[i[0]])
+
+print(len(sorted_questions))
+print(len(sorted_answers))
+print()
+for i in range(3):
+    print(sorted_questions[i])
+    print(sorted_answers[i])
+    print()
