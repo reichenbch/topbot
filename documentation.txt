@@ -1,0 +1,13 @@
+TOPIC - Troubleshoot Bot​: A bot which can be asked questions about the an appliance and the
+answer should come up from the manual or link to the manual topic. The questions will be in
+natural language or they can be also with options derived from a problem or a solution tree. It
+can also suggest best practices or operation manual about something.
+
+Motivation - Everytime we have small query while using a software or while writing a code we have to go the internet to search for the query.
+Sometimes we get lucky if someone already had the problem. But in most of the cases we don't type the exact query and the endup putting ourself in a tough situation.
+With this chatbot we plan to reduce the time spent on querying the problem.
+
+Features:
+1: The chatbot is fully generative without the use of any API
+2: We can easily move from one product to another(We just need training data)
+3: We are trying to make as human as possible
